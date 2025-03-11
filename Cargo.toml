@@ -1,0 +1,12 @@
+[package]
+name = "practice-calculator"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+factorial = "0.4.0"
+num-traits = "0.2.19"
+
+[[bin]]
+name = "rs-calculator"
+path = "src/main.rs"

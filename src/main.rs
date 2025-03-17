@@ -123,8 +123,10 @@ fn main() {
                 println!("Result: {}", result);
             }
             "div"   => {
-                let result = calc.divide();
-                println!("Result: {}", result);
+                match calc.divide() {
+                    Err(why) => panic!("Dividing {} by {} resulted in Error: {:?}", calc.get_param_a(), calc.get_param_b(), why),
+                    Ok(result) => println!("Result: {}", result),
+                }
             }
             "mod"   => {
                 let result = calc.modulo();
@@ -146,8 +148,11 @@ fn main() {
                 println!("Result: {}", result);
             }
             "sqrt"  => {
-                let result = calc.sqrt();
-                println!("Result: {}", result);
+                match calc.sqrt() {
+                    Err(why) => panic!("Drawing the Square Root of {} resulted in Error: {:?}", calc.get_param_a(), why),
+                    Ok(result) => println!("Result: {}", result),
+                }
+
             }
             _ => {
                 println!("Somehow, an invalid option made it through: {}\nPlease try again or contact the author.", choice);

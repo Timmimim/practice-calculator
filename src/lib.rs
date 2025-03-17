@@ -10,6 +10,15 @@ pub fn factorial (number:u64) -> u64 {
     }
 }
 
+#[derive(Debug)]
+pub enum MathError {
+    DivisionByZero, 
+    NonPositiveLogarithm,
+    NegativeSquareRoot,
+}
+
+pub type MathResult = Result<f64, MathError>;
+
 pub struct Calculator {
     param_a : f64,
     param_b : f64,
@@ -38,6 +47,14 @@ impl Calculator {
         }
     }
 
+    pub fn get_param_a(&self) -> f64 {
+        self.param_a
+    }
+
+    pub fn get_param_b(&self) -> f64 {
+        self.param_b
+    }
+
     pub fn add(&self) -> f64 {
         assert_ne!(self.param_b, INFINITY, "no second parameter given, or passed as INFINITY");
         self.param_a + self.param_b
@@ -53,10 +70,13 @@ impl Calculator {
         self.param_a * self.param_b
     }
 
-    pub fn divide(&self) -> f64 {
+    pub fn divide(&self) -> MathResult {
         assert_ne!(self.param_b, INFINITY, "no second parameter given, or passed as INFINITY");
-        assert_ne!(self.param_b, 0.0, "Division by Zero is illegal!");
-        self.param_a / self.param_b
+        if self.param_b == 0. {
+            Err(MathError::DivisionByZero)
+        } else {
+            Ok(self.param_a / self.param_b)
+        }
     }
 
     pub fn modulo(&self) -> Result<f64,&str> {
@@ -83,8 +103,12 @@ impl Calculator {
         self.param_a.pow(self.param_b)
     }
 
-    pub fn sqrt(&self) -> f64 {
-        f64::sqrt(self.param_a)
+    pub fn sqrt(&self) -> MathResult {
+        if self.param_a < 0. {
+            Err(MathError::NegativeSquareRoot)
+        } else {
+            Ok(f64::sqrt(self.param_a))
+        }
     }
 
 }
